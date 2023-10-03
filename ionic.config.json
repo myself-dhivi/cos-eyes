@@ -1,0 +1,7 @@
+{
+  "name": "cos-eyes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
