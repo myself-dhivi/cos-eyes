@@ -1,0 +1,41 @@
+ion-content {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      
+  
+    .img {
+      img {
+        max-width: 100%;
+        margin-top: 70%;
+        height: auto;
+        display: block;
+      }
+    }
+  
+    .content {
+      text-align: center;
+  
+      .title {
+        h1 {
+          font-size: 2rem;
+          margin-bottom: 10px;
+          color: #333333;
+        }
+      }
+  
+      .tagline {
+        p {
+          font-size: .75rem; 
+          color: #666666; 
+          margin-bottom: 20px; 
+          margin :  5%;
+        }
+      }
+    ion-icon{
+        color: white;
+    }
+     
+    }
+  }
+  
