@@ -11,6 +11,18 @@ const routes: Routes = [
     redirectTo: 'auth',
     pathMatch: 'full'
   },
+  {
+    path: 'userdashboard',
+    loadChildren: () => import('./user/userdashboard/userdashboard.module').then( m => m.UserdashboardPageModule)
+  },
+  {
+    path: 'camera-page',
+    loadChildren: () => import('./user/camera-page/camera-page.module').then( m => m.CameraPagePageModule)
+  },
+  {
+    path: 'output-page',
+    loadChildren: () => import('./user/output-page/output-page.module').then( m => m.OutputPagePageModule)
+  },
 ];
 
 @NgModule({

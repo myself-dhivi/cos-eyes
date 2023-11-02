@@ -1,0 +1,27 @@
+/* Styles for the Login Page screen */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  ion-input {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+  }
+  
+  ion-button {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+  }
+  

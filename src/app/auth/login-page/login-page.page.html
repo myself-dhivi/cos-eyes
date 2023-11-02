@@ -1,7 +1,18 @@
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Login-page</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="center-content">
+    
+      <img src="assets/Login.jpg" alt="">
+    
+
+    
+      <ion-input type="text" label="Email or Phone" fill="outline" labelPlacement="floating" name="emailOrPhone" required></ion-input>
+    
+
+    
+      <ion-input label="Password" labelPlacement="floating" fill="outline" type="password" name="password" required></ion-input>
+    
+       <p *ngIf="errorMsg" class="errorMsg">Please enter the vaild Details </p>
+    <ion-button expand="full" (click)="loginUser()">Login</ion-button>
+    <ion-button expand="full" (click)="navigateToCreateUser()">Create User</ion-button>
+  </div>
 </ion-content>

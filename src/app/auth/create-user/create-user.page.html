@@ -1,13 +1,14 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Create-User</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Create-User</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="center-content">
+    <img src="assets/createuser.png" alt="">
+    <h2>Create User</h2>
+    
+    <ion-input type="text" label="Full Name" fill="outline" labelPlacement="floating" name="fullName" required></ion-input>
+    <ion-input type="tel" label="Phone" fill="outline" labelPlacement="floating" name="Phone" required></ion-input>
+    <ion-input type="email" label="Email" fill="outline" labelPlacement="floating" name="email" required></ion-input>
+    <ion-input label="Password" labelPlacement="floating" fill="outline" type="password" name="password" required></ion-input>
+    <p *ngIf="errorMsg" class="errorMsg">Please enter vaild details </p>
+    <ion-button expand="full" (click)="createUser()">Create User</ion-button>
+    <ion-button expand="full" (click)="goToLoginPage()">Back to Login</ion-button>
+  </div>
 </ion-content>

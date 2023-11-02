@@ -21,6 +21,20 @@ ion-button{
     font-family: "Montserrat-Regular";
     font-weight: bold;
     letter-spacing: 2.5px;
-    --border-radius: 10px;
+    --border-radius: 20px;
     --background : rgb(3, 3, 56);
+}
+
+ion-label{
+    font-family: "Montserrat-Regular";
+}
+ion-input{
+    font-family: "Montserrat-Regular";
+}
+
+.errorMsg{
+    color: red;
+    font-size: smaller;
+    text-align: center;
+    font-family: "Montserrat-Regular";
 }
