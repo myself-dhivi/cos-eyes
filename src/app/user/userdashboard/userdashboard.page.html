@@ -1,17 +1,28 @@
-<ion-content [fullscreen]="true">
+<ion-content class="modern-content">
+
   <div class="center-content">
-    <h2>Welcome to Your Dashboard</h2>
-    
+    <h2>Click a image to Analyse</h2>
+
     <!-- Camera Button -->
-    <ion-button expand="block" (click)="openCamera()">
-      <ion-icon name="camera"></ion-icon>
+    <div>
+      <img src="assets/camera.png" alt="">
+    </div>
+    <ion-button expand="block" (click)="openCamera()" class="modern-button">
+      <ion-icon name="camera" class="modern-icon"></ion-icon>
       <span>Open Camera</span>
     </ion-button>
-    
+    <h2 class="modern-heading">or</h2> <!-- Changed h1 to h2 for consistent styling -->
+
     <!-- Upload Button -->
-    <ion-button expand="block" (click)="uploadFromDevice()">
-      <ion-icon name="cloud-upload"></ion-icon>
-      <span>Upload from Device</span>
+    <ion-item class="modern-upload">
+      <label for="fileInput" class="custom-file-upload">
+        <input type="file" id="fileInput" accept="image/*" label="FIle" (change)="uploadFromDevice($event)">
+        <ion-icon name="cloud-upload-outline"></ion-icon>
+      </label>
+    </ion-item>
+    <p *ngIf="errorMsg" class="errorMsg"> Please Capture or Upload the image</p>
+    <ion-button  (click)="Analyse()">
+      <span>Analyse the image</span>
     </ion-button>
   </div>
 </ion-content>

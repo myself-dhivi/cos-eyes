@@ -25,11 +25,10 @@ ion-button{
     --background : rgb(3, 3, 56);
 }
 
-ion-label{
+
+ion-input,ion-label,h1,h2,h3{
     font-family: "Montserrat-Regular";
-}
-ion-input{
-    font-family: "Montserrat-Regular";
+    font-weight:bolder;
 }
 
 .errorMsg{

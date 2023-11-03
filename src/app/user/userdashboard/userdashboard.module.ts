@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { UserdashboardPageRoutingModule } from './userdashboard-routing.module';
-
+import { Storage } from '@ionic/storage';
 import { UserdashboardPage } from './userdashboard.page';
 
 @NgModule({
@@ -14,6 +14,7 @@ import { UserdashboardPage } from './userdashboard.page';
     UserdashboardPageRoutingModule
   ],
   declarations: [UserdashboardPage],
+  providers:[Storage]
 
 })
 export class UserdashboardPageModule {}
