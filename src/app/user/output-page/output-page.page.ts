@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
+import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
+
+// Define a type or interface for the response
+interface ImaggaApiResponse {
+  result: {
+    tags: { tag: { en: string } }[];
+  };
+}
 
 @Component({
   selector: 'app-output-page',
@@ -9,25 +18,55 @@ import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 })
 export class OutputPagePage implements OnInit {
   base64Image: any;
-  caption= "Caption of the image Will be displayed here. This is sample of captioning image we are working on the AI algorithm once done we can give the real time data for this";
-  sensitivityValue= "30%";
+  caption = "Caption of the image will be displayed here.";
+  sensitivityValue = "30%";
 
   constructor(
-    private storage : Storage,
-    private textToSpeech: TextToSpeech
-  ) { }
+    private storage: Storage,
+    private textToSpeech: TextToSpeech,
+    private http: HttpClient,
+    private location: Location
+  ) {}
 
   ngOnInit() {
-    this.storage.create()
+    this.storage.create();
     this.storage.get("imageURL").then((imageData) => {
       this.base64Image = imageData;
+      this.getImageTags(imageData);
     });
+  }
+
+  async getImageTags(imageUrl: string) {
+    try {
+      const apiKey = 'acc_14406a3a3dd357b';
+      const apiSecret = 'ede7a45f426c47231024ce315eb45ca4';
+      const imaggaApiUrl = `https://api.imagga.com/v2/tags?image_url=${encodeURIComponent(imageUrl)}`;
+
+      const response = await this.http.post<ImaggaApiResponse>(imaggaApiUrl, null, {
+        headers: {
+          'Authorization': `Basic ${btoa(`${apiKey}:${apiSecret}`)}`
+        }
+      }).toPromise(); 
+
+      if (response && response.result && response.result.tags) {
+        const tags = response.result.tags;
+        this.caption = "Tags: " + tags.map((tag: any) => tag.tag.en).join(', ');
+      } else {
+        console.log("Invalid response format");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  back() {
+    this.location.back();
   }
 
   playAudio() {
     this.textToSpeech
-    .speak(this.caption)
-    .then(() => console.log('Done'))
-    .catch((reason: any) => console.log(reason));
+      .speak(this.caption)
+      .then(() => console.log('Done'))
+      .catch((reason: any) => console.log(reason));
   }
 }

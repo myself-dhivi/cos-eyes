@@ -1,39 +1,57 @@
-
 @import "@ionic/angular/css/core.css";
 
-/* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
 @import '@ionic/angular/css/display.css';
 
-/* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-ion-text{
+ion-text,
+ion-button,
+ion-input,
+ion-label,
+h1,
+h2,
+h3,
+body,
+ion-content {
     font-family: "Montserrat-Regular";
 }
-ion-button{
-    font-family: "Montserrat-Regular";
+
+ion-button {
     font-weight: bold;
     letter-spacing: 2.5px;
-    --border-radius: 20px;
-    --background : rgb(3, 3, 56);
+    --background: rgb(3, 3, 56);
 }
 
-
-ion-input,ion-label,h1,h2,h3{
-    font-family: "Montserrat-Regular";
-    font-weight:bolder;
+ion-content {
+    --background: #f0f0f0;
 }
 
-.errorMsg{
+ion-fab-button {
+    --background: rgb(3, 3, 56);
+}
+
+.errorMsg {
     color: red;
     font-size: smaller;
     text-align: center;
     font-family: "Montserrat-Regular";
+}
+
+.back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.logout {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }

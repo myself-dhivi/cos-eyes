@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { IonicModule } from '@ionic/angular';
-
+import { HttpClientModule } from '@angular/common/http';
 import { OutputPagePageRoutingModule } from './output-page-routing.module';
 
 import { OutputPagePage } from './output-page.page';
@@ -13,7 +13,8 @@ import { OutputPagePage } from './output-page.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    OutputPagePageRoutingModule
+    OutputPagePageRoutingModule,
+    HttpClientModule
   ],
   declarations: [OutputPagePage],
   providers:[Storage]

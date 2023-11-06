@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-login-page',
@@ -7,25 +9,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.page.scss'],
 })
 export class LoginPagePage {
-  errorMsg: boolean =false;
+  errorMsg: boolean = false;
+  showPassword: any;
+  errortext: any;
+  isLoading: any;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location : Location) {}
+
+  back(){
+    this.location.back()
+  }
 
   loginUser() {
-    // Perform login validation here
     const emailOrPhone = (document.getElementsByName('emailOrPhone')[0] as HTMLInputElement).value;
     const password = (document.getElementsByName('password')[0] as HTMLInputElement).value;
 
-    // Check if emailOrPhone and password are not empty
     if (emailOrPhone && password) {
       this.router.navigate(['/userdashboard']);
     } else {
-      this.errorMsg = true
+      this.errorMsg = true;
     }
   }
 
   navigateToCreateUser() {
-    // Redirect to the create user page
+   
     this.router.navigate(['auth/create-user']);
   }
+
+ 
 }

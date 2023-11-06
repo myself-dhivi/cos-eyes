@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,7 +10,11 @@ import { Router } from '@angular/router';
 export class CreateUserPage {
   errorMsg= false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location : Location) { }
+
+  back(){
+    this.location.back()
+  }
 
   createUser() {
     // Perform user creation logic here

@@ -1,15 +1,17 @@
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">output-page</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-card>
-    <img [src]="base64Image" alt="Image">
+  <div class="back">
+    <ion-fab-button (click)="back()">
+    <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-fab-button>
+  </div>
 
-    <h1 >{{caption}}</h1>
+  <div class="center">
+    <h1 class="title">Image Captioning</h1>
+    <ion-card>
+    <img [src]="base64Image" alt="Image">
+    <h1>{{caption}}</h1>
     <ion-button (click)="playAudio()">Play Audio</ion-button>
-     <h1>Senitivity of the image is </h1>
+    <h1>Senitivity of the image is </h1>
     <ion-range min="1" [disabled]="true" max="100" [(ngModel)]="sensitivityValue">
       <ion-label slot="start">1</ion-label>
       <ion-label slot="end">100</ion-label>
@@ -17,4 +19,6 @@
 
     <ion-label class="range-value">{{ sensitivityValue }}</ion-label>
   </ion-card>
+  </div>
+  
 </ion-content>

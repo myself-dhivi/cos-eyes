@@ -1,27 +1,29 @@
-/* Styles for the Login Page screen */
-.center-content {
+ion-content{
+  --background: #f0f0f0;
+
+  .center-content{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    margin: 0% 10%;
     justify-content: center;
     height: 100vh;
+    font-family: "Montserrat-Regular";
+
+    ion-text{
+      text-align: center;
+      font-weight: bolder;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    img {
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+
+    ion-input {
+      margin-bottom: 15px;
+    font-family: "Montserrat-Regular";
+
+    }
   }
-  
-  img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-  }
-  
-  ion-input {
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 15px;
-  }
-  
-  ion-button {
-    width: 100%;
-    max-width: 300px;
-    margin-top: 20px;
-  }
-  
+}

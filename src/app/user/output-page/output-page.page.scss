@@ -1,3 +1,16 @@
+.center{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  .title{
+     font-size: 20px;
+     font-family: "Montserrat-Regular";
+     font-weight: bolder;
+  }
+}
+
 ion-card {
     display: flex;
     flex-direction: column;
@@ -6,11 +19,9 @@ ion-card {
     text-align: center;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Add a subtle box shadow
-    background-color: #ffffff; // Set the background color
-    width: 80%; // Adjust the width as needed
-    margin: 0 auto; // Center the card horizontally
-    margin-top: 20%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff; 
+    margin: 10% 5%;
   }
   
   img {

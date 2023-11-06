@@ -1,41 +1,61 @@
-ion-content.modern-content {
+.center-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* This ensures the content takes up the full viewport height */
+  height: 100vh;
 }
 
-.center-content {
-  text-align: center;
-  width: 100%;
-  max-width: 300px; /* Adjust the max-width to your desired value */
-  margin: 0 auto;
-  padding: 20px; /* Add padding for spacing */
+.modern-icon{
+  margin-right: 10px;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 20px; /* Add margin at the bottom of images */
+.title{
+  font-weight: bolder;
 }
 
+/* Style for the custom file upload label */
 .custom-file-upload {
   display: inline-block;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
   cursor: pointer;
-  margin-top: 20px; /* Add margin at the top of the file upload button */
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
 }
 
-.errorMsg {
-  color: red;
-  font-size: 14px;
-  margin-top: 20px; /* Add margin at the top of the error message */
+.custom-file-upload:hover {
+  background-color: #e3e3e3;
 }
 
-ion-button {
-  margin-top: 50px; /* Add margin at the top of the buttons */
+
+.custom-file-upload ion-icon {
+  font-size: 24px; 
+  margin-right: 10px;
+  vertical-align: middle; 
 }
 
-ion-icon{
-  margin-right:10px;
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+
+.custom-file-upload span {
+  font-weight: bold;
+}
+
+
+.custom-file-upload input[type="file"]:not(:empty) + label {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.custom-file-upload input[type="file"]:hover + label {
+  background-color: #2E7D32;
+  color: white;
+  border-color: #2E7D32;
 }

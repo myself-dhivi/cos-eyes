@@ -9,60 +9,71 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./userdashboard.page.scss'],
 })
 export class UserdashboardPage implements OnInit {
-  path: any;
-  navigate = false
-  errorMsg =false
+  path: string | null = null;
+  errorMsg = false;
+  navigate = false;
+  image: any;
+  filePath: string | null = null;
+
   constructor(private router: Router, private storage: Storage) {}
 
   ngOnInit() {
     this.storage.create();
   }
 
+  logout() {
+    this.router.navigate(['/']);
+  }
+
   async openCamera() {
     try {
-      const image = await Camera.getPhoto({
+      this.image = await Camera.getPhoto({
         quality: 90,
-        allowEditing: true,
+        allowEditing: false,
         resultType: CameraResultType.Base64,
         source: CameraSource.Camera,
       });
-      const imageUrl = "data:image/png;base64,"+image.base64String;
-      console.log(image);
-      this.storage.set('imageURL', imageUrl);
-      this.path = imageUrl; 
-      this.navigate = true
+
+      this.filePath = this.image.path; // Store the file path
+      this.setPathAndNavigate(this.image.base64String);
     } catch (error) {
       console.error(error);
     }
   }
 
-  async uploadFromDevice(event: any) {
-    const file = event.target.files[0];
-    console.log(file)
+  async uploadFromDevice(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const file = inputElement.files?.[0];
+
     if (file) {
+      this.filePath = URL.createObjectURL(file); // Store the file path
       const reader = new FileReader();
+
       reader.onload = async (e) => {
         if (e.target) {
           const base64Image = e.target.result as string;
-          console.log(base64Image);
-          this.storage.set('imageURL', base64Image);
-          this.path = base64Image; 
-          this.navigate = true
+          this.setPathAndNavigate(base64Image);
         } else {
           console.error('Failed to convert image to base64.');
         }
       };
+
       reader.readAsDataURL(file);
     } else {
       console.error('No image selected');
     }
   }
-  Analyse(){
-    if(this.navigate){
-      this.router.navigate(["/output-page"])
-    }else(
-      this.errorMsg = true
-    )
-  
+
+  async Analyze() {
+    this.navigate ? this.router.navigate(['/output-page']) : (this.errorMsg = true);
+  }
+
+  private setPathAndNavigate(imageData: string) {
+    this.storage.set('imageData', imageData);
+    this.path = 'data:image/png;base64,' + imageData;
+    if (this.filePath) {
+      this.storage.set('filePath', this.filePath); // Store the file path
+    }
+    this.navigate = true;
   }
 }

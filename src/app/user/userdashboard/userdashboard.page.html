@@ -1,28 +1,28 @@
 <ion-content class="modern-content">
+  <div class="logout">
+    <ion-fab-button (click)="logout()" color="danger">
+      <ion-icon name="log-out"></ion-icon>
+    </ion-fab-button>
+  </div>
 
   <div class="center-content">
-    <h2>Click a image to Analyse</h2>
-
-    <!-- Camera Button -->
+      <h2 class="title">Click an image to Analyze</h2>
     <div>
       <img src="assets/camera.png" alt="">
     </div>
-    <ion-button expand="block" (click)="openCamera()" class="modern-button">
+    <ion-button (click)="openCamera()" class="modern-button">
       <ion-icon name="camera" class="modern-icon"></ion-icon>
       <span>Open Camera</span>
     </ion-button>
-    <h2 class="modern-heading">or</h2> <!-- Changed h1 to h2 for consistent styling -->
-
-    <!-- Upload Button -->
-    <ion-item class="modern-upload">
-      <label for="fileInput" class="custom-file-upload">
-        <input type="file" id="fileInput" accept="image/*" label="FIle" (change)="uploadFromDevice($event)">
-        <ion-icon name="cloud-upload-outline"></ion-icon>
-      </label>
-    </ion-item>
+    <h2 class="modern-heading">or</h2>
+    <label class="custom-file-upload" for="fileInput">
+      <ion-icon name="cloud-upload-outline"></ion-icon> Upload Image
+      <input type="file" id="fileInput" accept="image/*" name="myfiles[]" multiple (change)="uploadFromDevice($event)">
+    </label>
     <p *ngIf="errorMsg" class="errorMsg"> Please Capture or Upload the image</p>
-    <ion-button  (click)="Analyse()">
-      <span>Analyse the image</span>
+    <ion-button (click)="Analyze()">
+      <span>Analyze the image</span>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
     </ion-button>
   </div>
 </ion-content>

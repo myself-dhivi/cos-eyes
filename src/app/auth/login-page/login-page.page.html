@@ -1,18 +1,16 @@
 <ion-content [fullscreen]="true">
+  <div class="back">
+    <ion-fab-button (click)="back()">
+    <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-fab-button>
+  </div>
   <div class="center-content">
-    
-      <img src="assets/Login.jpg" alt="">
-    
-
-    
-      <ion-input type="text" label="Email or Phone" fill="outline" labelPlacement="floating" name="emailOrPhone" required></ion-input>
-    
-
-    
-      <ion-input label="Password" labelPlacement="floating" fill="outline" type="password" name="password" required></ion-input>
-    
-       <p *ngIf="errorMsg" class="errorMsg">Please enter the vaild Details </p>
-    <ion-button expand="full" (click)="loginUser()">Login</ion-button>
+    <img src="assets/Login.png" alt="">
+     <ion-text> Welcome Back</ion-text>
+    <ion-input type="text" label="Email or Phone" fill="outline" labelPlacement="floating" name="emailOrPhone" required></ion-input>
+    <ion-input label="Password" labelPlacement="floating" fill="outline" type="password" name="password" required></ion-input>
+    <p *ngIf="errorMsg" class="errorMsg">Please enter the valid Details</p>
+    <ion-button  (click)="loginUser()">Login</ion-button>
     <ion-button expand="full" (click)="navigateToCreateUser()">Create User</ion-button>
   </div>
 </ion-content>
