@@ -65,7 +65,7 @@ export class UserdashboardPage implements OnInit {
   }
 
   async Analyze() {
-    this.navigate ? this.router.navigate(['/output-page']) : (this.errorMsg = true);
+    this.navigate ? this.router.navigate(['/output-page'])  : (this.errorMsg = true);
   }
 
   private setPathAndNavigate(imageData: string) {
@@ -75,5 +75,6 @@ export class UserdashboardPage implements OnInit {
       this.storage.set('filePath', this.filePath); // Store the file path
     }
     this.navigate = true;
+    this.errorMsg = false;
   }
 }
