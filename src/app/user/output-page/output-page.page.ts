@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 // Define a type or interface for the response
 interface ImaggaApiResponse {
@@ -18,19 +19,20 @@ interface ImaggaApiResponse {
 })
 export class OutputPagePage implements OnInit {
   base64Image: any;
-  caption = "Caption of the image will be displayed here.";
+  caption = "This is a Image of te Cat Looking Curiously.";
   sensitivityValue = "30%";
 
   constructor(
     private storage: Storage,
     private textToSpeech: TextToSpeech,
     private http: HttpClient,
-    private location: Location
+    private location: Location,
+    private router : Router
   ) {}
 
   ngOnInit() {
     this.storage.create();
-    this.storage.get("imageURL").then((imageData) => {
+    this.storage.get("imageData").then((imageData) => {
       this.base64Image = imageData;
       this.getImageTags(imageData);
     });
@@ -68,5 +70,8 @@ export class OutputPagePage implements OnInit {
       .speak(this.caption)
       .then(() => console.log('Done'))
       .catch((reason: any) => console.log(reason));
+  }
+  sensitivity(){
+    this.router.navigate(["/sentivity"])
   }
 }

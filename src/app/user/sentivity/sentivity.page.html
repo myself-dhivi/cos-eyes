@@ -6,12 +6,12 @@
   </div>
 
   <div class="center">
-    <h1 class="title">Image Captioning</h1>
+    <h1 class="title">Sensitivity Analysis</h1>
     <ion-card>
     <img [src]="base64Image" alt="Image">
-    <h1> <span>Image Discribtion :</span>  {{caption}}</h1>
+    <h1> <span>Sensivity :</span> 0 %</h1>
+    <h2><span>Report : </span> There is no sensitive content in this image</h2>
     <ion-button (click)="playAudio()">Play Audio</ion-button>
-    <ion-button (click)="sensitivity()">Analyse sensitivity</ion-button>
     
 
   </ion-card>

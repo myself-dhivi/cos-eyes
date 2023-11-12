@@ -36,6 +36,7 @@ export class UserdashboardPage implements OnInit {
 
       this.filePath = this.image.path; // Store the file path
       this.setPathAndNavigate(this.image.base64String);
+
     } catch (error) {
       console.error(error);
     }
@@ -71,9 +72,7 @@ export class UserdashboardPage implements OnInit {
   private setPathAndNavigate(imageData: string) {
     this.storage.set('imageData', imageData);
     this.path = 'data:image/png;base64,' + imageData;
-    if (this.filePath) {
-      this.storage.set('filePath', this.filePath); // Store the file path
-    }
+    this.storage.set('filePath', this.path);
     this.navigate = true;
     this.errorMsg = false;
   }

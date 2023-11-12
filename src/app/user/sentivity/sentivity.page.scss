@@ -1,0 +1,74 @@
+.center{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    .title{
+       font-size: 20px;
+       font-family: "Montserrat-Regular";
+       font-weight: bolder;
+    }
+  }
+  
+  ion-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: #ffffff; 
+      margin: 10% 5%;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 10px; // Apply rounded corners to the image
+    }
+    
+    ion-input {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  
+    ion-range {
+      width: 100%;
+    }
+    
+    /* Customize the range track and thumb */
+    ion-range .range-md-track {
+      background-color: #d1d1d1; // Track color
+    }
+    
+    ion-range .range-md-thumb {
+      background-color: #3880ff; // Thumb color
+    }
+    
+    /* Add some margin to the labels for better spacing */
+    ion-label {
+      margin: 0 10px;
+    }
+    
+    /* Optional: Style the ion-header (if needed) */
+    ion-header {
+      background-color: #3880ff; // Header background color
+      ion-toolbar {
+        --color: #ffffff; // Text color
+      }
+    }
+    h1{
+      font-size:medium;
+      font-weight: bolder;
+      font-family: "Montserrat-Regular";
+    }
+  
+    h1 span{
+      font-size:medium;
+      font-weight: bold;
+      font-family: "Montserrat-Regular";
+    }

@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'output-page',
     loadChildren: () => import('./user/output-page/output-page.module').then( m => m.OutputPagePageModule)
+  },  {
+    path: 'sentivity',
+    loadChildren: () => import('./user/sentivity/sentivity.module').then( m => m.SentivityPageModule)
   },
+
 ];
 
 @NgModule({
