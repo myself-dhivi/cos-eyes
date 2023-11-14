@@ -5,13 +5,15 @@ import { IonicModule } from '@ionic/angular';
 import { UserdashboardPageRoutingModule } from './userdashboard-routing.module';
 import { Storage } from '@ionic/storage';
 import { UserdashboardPage } from './userdashboard.page';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UserdashboardPageRoutingModule
+    UserdashboardPageRoutingModule,
+    HttpClientModule
   ],
   declarations: [UserdashboardPage],
   providers:[Storage]

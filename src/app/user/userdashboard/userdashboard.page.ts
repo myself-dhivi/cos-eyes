@@ -1,3 +1,4 @@
+// Inside UserdashboardPage class
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -14,6 +15,8 @@ export class UserdashboardPage implements OnInit {
   navigate = false;
   image: any;
   filePath: string | null = null;
+  uploadedFileName: string | null = null;
+  imageurl: any;
 
   constructor(private router: Router, private storage: Storage) {}
 
@@ -33,46 +36,38 @@ export class UserdashboardPage implements OnInit {
         resultType: CameraResultType.Base64,
         source: CameraSource.Camera,
       });
-
-      this.filePath = this.image.path; // Store the file path
-      this.setPathAndNavigate(this.image.base64String);
+      this.setPathAndNavigate("data:image/png;base64," +this.image.base64String);
+      console.log(this.image.base64String);
 
     } catch (error) {
       console.error(error);
     }
   }
 
-  async uploadFromDevice(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files?.[0];
+async uploadFromDevice(event: Event) {
+  const inputElement = event.target as HTMLInputElement;
 
-    if (file) {
-      this.filePath = URL.createObjectURL(file); // Store the file path
-      const reader = new FileReader();
+  if (inputElement.files && inputElement.files.length > 0) {
+    const file = inputElement.files[0];
 
-      reader.onload = async (e) => {
-        if (e.target) {
-          const base64Image = e.target.result as string;
-          this.setPathAndNavigate(base64Image);
-        } else {
-          console.error('Failed to convert image to base64.');
-        }
-      };
+    const reader = new FileReader();
 
-      reader.readAsDataURL(file);
-    } else {
-      console.error('No image selected');
-    }
+    reader.onloadend = () => {
+      this.imageurl = reader.result as string;
+      console.log(this.imageurl);
+      this.setPathAndNavigate(this.imageurl);
+    };
+
+    reader.readAsDataURL(file);
+    
   }
+}
 
   async Analyze() {
-    this.navigate ? this.router.navigate(['/output-page'])  : (this.errorMsg = true);
+    this.navigate ? this.router.navigate(['/output-page']) : (this.errorMsg = true);
   }
-
-  private setPathAndNavigate(imageData: string) {
-    this.storage.set('imageData', imageData);
-    this.path = 'data:image/png;base64,' + imageData;
-    this.storage.set('filePath', this.path);
+  private async setPathAndNavigate(imageData: string) {
+    await this.storage.set('imageData', imageData);
     this.navigate = true;
     this.errorMsg = false;
   }
