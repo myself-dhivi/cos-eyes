@@ -1,3 +1,4 @@
+<!-- userdashboard.page.html -->
 <ion-content class="modern-content">
   <div class="logout">
     <ion-fab-button (click)="logout()" color="danger">
@@ -6,7 +7,7 @@
   </div>
 
   <div class="center-content">
-      <h2 class="title">Click an image to Analyze</h2>
+    <h2 class="title">Click an image to Analyze</h2>
     <div>
       <img src="assets/camera.png" alt="">
     </div>
@@ -17,9 +18,11 @@
     <h2 class="modern-heading">or</h2>
     <label class="custom-file-upload" for="fileInput">
       <ion-icon name="cloud-upload-outline"></ion-icon> Upload Image
-      <input type="file" id="fileInput" accept="image/*" name="myfiles[]" multiple (change)="uploadFromDevice($event)">
+      <input type="file" id="fileInput" accept="image/*" (change)="uploadFromDevice($event)">
     </label>
     <p *ngIf="errorMsg" class="errorMsg"> Please Capture or Upload the image</p>
+    <p *ngIf="uploadedFileName" class="uploadedFileName">Uploaded File: {{ uploadedFileName }}</p>
+
     <ion-button (click)="Analyze()">
       <span>Analyze the image</span>
       <ion-icon name="chevron-forward-outline"></ion-icon>

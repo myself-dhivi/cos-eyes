@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
-import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
-
-// Define a type or interface for the response
-interface ImaggaApiResponse {
-  result: {
-    tags: { tag: { en: string } }[];
-  };
-}
+import { Router } from '@angular/router';
+import { EdenAIService } from 'src/app/services/eden-ai.service';
+import { Base64toURLService } from 'src/app/services/base64to-url.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-output-page',
@@ -18,45 +14,51 @@ interface ImaggaApiResponse {
 })
 export class OutputPagePage implements OnInit {
   base64Image: any;
-  caption = "Caption of the image will be displayed here.";
+  caption = "This is an image of the cat looking curiously.";
   sensitivityValue = "30%";
 
   constructor(
     private storage: Storage,
     private textToSpeech: TextToSpeech,
-    private http: HttpClient,
-    private location: Location
+    private location: Location,
+    private router: Router,
+    private edenAIService: EdenAIService,
+    private base64toUrl : Base64toURLService
   ) {}
 
-  ngOnInit() {
-    this.storage.create();
-    this.storage.get("imageURL").then((imageData) => {
-      this.base64Image = imageData;
-      this.getImageTags(imageData);
-    });
+  async ngOnInit() {
+    await this.storage.create();
+    this.base64Image = await this.storage.get("imageData");
+    this.Base64ToUrl()
   }
 
-  async getImageTags(imageUrl: string) {
-    try {
-      const apiKey = 'acc_14406a3a3dd357b';
-      const apiSecret = 'ede7a45f426c47231024ce315eb45ca4';
-      const imaggaApiUrl = `https://api.imagga.com/v2/tags?image_url=${encodeURIComponent(imageUrl)}`;
-
-      const response = await this.http.post<ImaggaApiResponse>(imaggaApiUrl, null, {
-        headers: {
-          'Authorization': `Basic ${btoa(`${apiKey}:${apiSecret}`)}`
+  Base64ToUrl() {
+    console.log("working 1");
+    
+    const base64Content = this.base64Image;
+    const filename = 'Cos-eyes_AI.png';
+    console.log("working 2");
+  
+    this.base64toUrl.uploadBase64Image(base64Content, filename)
+      .subscribe(
+        (response) => {
+          console.log('Upload successful', response);
+          this.getCaption();
+        },
+        (error) => {
+          console.error('Error uploading image', error);
         }
-      }).toPromise(); 
+      );
+  }
+  
 
-      if (response && response.result && response.result.tags) {
-        const tags = response.result.tags;
-        this.caption = "Tags: " + tags.map((tag: any) => tag.tag.en).join(', ');
-      } else {
-        console.log("Invalid response format");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  getCaption() {
+    this.edenAIService.performObjectDetection(this.base64Image).pipe(
+      tap((response) => {
+        console.log(response);
+        this.caption = response.caption;
+      })
+    ).subscribe();
   }
 
   back() {
@@ -68,5 +70,9 @@ export class OutputPagePage implements OnInit {
       .speak(this.caption)
       .then(() => console.log('Done'))
       .catch((reason: any) => console.log(reason));
+  }
+
+  sensitivity() {
+    this.router.navigate(['/sensitivity']);
   }
 }
