@@ -3,7 +3,6 @@ import { Storage } from '@ionic/storage';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-output-page',
@@ -13,21 +12,22 @@ import { tap } from 'rxjs/operators';
 export class OutputPagePage implements OnInit {
   base64Image: any;
   caption = "";
-  sensitivityValue = "";
-  blobImage: any;
+  ExtractedText = "";
 
   constructor(
     private storage: Storage,
     private textToSpeech: TextToSpeech,
     private location: Location,
-    private router: Router,
+    private router: Router
   ) {}
 
   async ngOnInit() {
     await this.storage.create();
     this.base64Image = await this.storage.get('Base64String');
-    this.caption = await this.storage.get('Caption')
+    this.caption = await this.storage.get('Caption');
+    this.ExtractedText = await this.storage.get('ExtractedText');
   }
+
   back() {
     this.location.back();
   }
@@ -40,6 +40,6 @@ export class OutputPagePage implements OnInit {
   }
 
   sensitivity() {
-    this.router.navigate(['/sentivity']);
+    this.router.navigate(['/sensitivity']);
   }
 }

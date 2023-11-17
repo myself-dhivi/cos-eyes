@@ -1,23 +1,25 @@
 <ion-content [fullscreen]="true">
   <div class="back">
     <ion-fab-button (click)="back()">
-    <ion-icon name="chevron-back-outline"></ion-icon>
+      <ion-icon name="chevron-back-outline"></ion-icon>
     </ion-fab-button>
   </div>
 
   <div class="center">
     <h1 class="title">Image Captioning</h1>
     <ion-card>
-    <img [src]="base64Image" alt="Image">
-    <h1> <span>Image Discribtion :
-      <br>
-
-    </span>  {{caption}}</h1>
-    <ion-button (click)="playAudio()">Play Audio</ion-button>
-    <ion-button (click)="sensitivity()">Analyse sensitivity</ion-button>
-    
-
-  </ion-card>
+      <img [src]="base64Image" alt="Image" />
+      <h1>
+        <span>Image Description :</span><br />
+        {{caption}}
+      </h1>
+      <h1>
+        <span *ngIf="ExtractedText !== ''">Extracted Text :</span><br />
+        {{ExtractedText}}
+      </h1>
+      
+      <ion-button (click)="playAudio()">Play Audio</ion-button>
+      <ion-button (click)="sensitivity()">Analyse Sensitivity</ion-button>
+    </ion-card>
   </div>
-  
 </ion-content>

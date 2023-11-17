@@ -4,6 +4,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Storage } from '@ionic/storage';
 import { tap } from 'rxjs';
 import { ImageCaptionService } from 'src/app/services/captioning/image-caption.service';
+import { TextExtrationService } from 'src/app/services/text-extraction/text-extration.service';
 
 @Component({
   selector: 'app-userdashboard',
@@ -22,7 +23,8 @@ export class UserdashboardPage implements OnInit {
   constructor(
     private router: Router,
     private storage: Storage,
-    private imageCaptionService: ImageCaptionService, // Inject the service here
+    private imageCaptionService: ImageCaptionService, 
+    private TextExtraction : TextExtrationService
   ) { }
 
   ngOnInit() {
@@ -42,6 +44,7 @@ export class UserdashboardPage implements OnInit {
         source: CameraSource.Camera,
       });
       this.setPathAndNavigate("data:image/png;base64," + this.image.base64String);
+      this.Base64String = "data:image/png;base64," + this.image.base64String
       this.uploadedFileName = "Capture_image.png";
       console.log(this.uploadedFileName);
     } catch (error) {
@@ -54,7 +57,7 @@ export class UserdashboardPage implements OnInit {
 
     if (inputElement.files && inputElement.files.length > 0) {
       const file = inputElement.files[0];
-      this.uploadedFileName = file.name; // Capture the uploaded file name
+      this.uploadedFileName = file.name; 
 
       const reader = new FileReader();
 
@@ -70,27 +73,40 @@ export class UserdashboardPage implements OnInit {
   Analyze() {
     try {
       this.isLoading = true;
-      if (this.Base64String) {
-        const file = this.base64toFile(this.Base64String, 'uploaded_image.png', 'image/png');
-        this.imageCaptionService.generateCaption(file)
+      if (!this.Base64String) {
+        this.errorMsg = true;
+        this.isLoading = false;
+        return;
+      }
+  
+      const file = this.base64toFile(this.Base64String, 'uploaded_image.png', 'image/png');
+      this.imageCaptionService.generateCaption(file)
         .pipe(
           tap(response => {
             this.isLoading = false;
             console.log("generated Tag: " + response.caption);
             this.storage.set("Caption", response.caption);
-            this.router.navigate(["/output-page"]);
+            this.TextExtraction.extractTextFromImage(file)
+              .pipe(
+                tap(textResponse => {
+                  console.log("ExtractedText: " + textResponse.extracted_text);
+                  const cleanedResponse = textResponse.extracted_text.replace(/\n/g, ' ');
+                  this.storage.set("ExtractedText", cleanedResponse);
+                })
+              )
+              .subscribe(() => {
+                this.router.navigate(["/output-page"]);
+              });
           }),
         )
-       .subscribe();
-      } else {
-        this.errorMsg = true;
-        this.isLoading = false;
-      }
+        .subscribe();
     } catch (error) {
       console.error('Error generating caption:', error);
       this.isLoading = false;
     }
   }
+  
+  
   
 
 
