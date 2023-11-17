@@ -1,8 +1,9 @@
-// Inside UserdashboardPage class
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Storage } from '@ionic/storage';
+import { tap } from 'rxjs';
+import { ImageCaptionService } from 'src/app/services/captioning/image-caption.service';
 
 @Component({
   selector: 'app-userdashboard',
@@ -14,11 +15,15 @@ export class UserdashboardPage implements OnInit {
   errorMsg = false;
   navigate = false;
   image: any;
-  filePath: string | null = null;
+  Base64String: any;
   uploadedFileName: string | null = null;
-  imageurl: any;
+  isLoading: boolean = false
 
-  constructor(private router: Router, private storage: Storage) {}
+  constructor(
+    private router: Router,
+    private storage: Storage,
+    private imageCaptionService: ImageCaptionService, // Inject the service here
+  ) { }
 
   ngOnInit() {
     this.storage.create();
@@ -36,39 +41,77 @@ export class UserdashboardPage implements OnInit {
         resultType: CameraResultType.Base64,
         source: CameraSource.Camera,
       });
-      this.setPathAndNavigate("data:image/png;base64," +this.image.base64String);
-      console.log(this.image.base64String);
-
+      this.setPathAndNavigate("data:image/png;base64," + this.image.base64String);
+      this.uploadedFileName = "Capture_image.png";
+      console.log(this.uploadedFileName);
     } catch (error) {
       console.error(error);
     }
   }
 
-async uploadFromDevice(event: Event) {
-  const inputElement = event.target as HTMLInputElement;
+  async uploadFromDevice(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
 
-  if (inputElement.files && inputElement.files.length > 0) {
-    const file = inputElement.files[0];
+    if (inputElement.files && inputElement.files.length > 0) {
+      const file = inputElement.files[0];
+      this.uploadedFileName = file.name; // Capture the uploaded file name
 
-    const reader = new FileReader();
+      const reader = new FileReader();
 
-    reader.onloadend = () => {
-      this.imageurl = reader.result as string;
-      console.log(this.imageurl);
-      this.setPathAndNavigate(this.imageurl);
-    };
+      reader.onloadend = () => {
+        this.Base64String = reader.result as string;
+        this.setPathAndNavigate(this.Base64String);
+      };
 
-    reader.readAsDataURL(file);
-    
+      reader.readAsDataURL(file);
+    }
   }
-}
 
-  async Analyze() {
-    this.navigate ? this.router.navigate(['/output-page']) : (this.errorMsg = true);
+  Analyze() {
+    try {
+      this.isLoading = true;
+      if (this.Base64String) {
+        const file = this.base64toFile(this.Base64String, 'uploaded_image.png', 'image/png');
+        this.imageCaptionService.generateCaption(file)
+        .pipe(
+          tap(response => {
+            this.isLoading = false;
+            console.log("generated Tag: " + response.caption);
+            this.storage.set("Caption", response.caption);
+            this.router.navigate(["/output-page"]);
+          }),
+        )
+       .subscribe();
+      } else {
+        this.errorMsg = true;
+        this.isLoading = false;
+      }
+    } catch (error) {
+      console.error('Error generating caption:', error);
+      this.isLoading = false;
+    }
   }
-  private async setPathAndNavigate(imageData: string) {
-    await this.storage.set('imageData', imageData);
+  
+
+
+
+  private async setPathAndNavigate(Base64String: any) {
+    await this.storage.set('Base64String', Base64String);
     this.navigate = true;
     this.errorMsg = false;
   }
+
+  private base64toFile(base64String: string, fileName: string, mimeType: string): File {
+    const byteString = atob(base64String.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: mimeType });
+    return new File([blob], fileName, { lastModified: Date.now() });
+  }
+
 }

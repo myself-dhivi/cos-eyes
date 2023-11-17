@@ -33,6 +33,7 @@
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/preferences": "^5.0.6",
     "@capacitor/status-bar": "5.0.6",
+    "@google-cloud/translate": "^8.0.2",
     "@ionic-native/camera": "^5.36.0",
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/text-to-speech": "^5.36.0",
@@ -46,6 +47,7 @@
     "ionicons": "^7.0.0",
     "npm": "^10.2.2",
     "rxjs": "~7.8.0",
+    "tesseract.js": "^5.0.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },

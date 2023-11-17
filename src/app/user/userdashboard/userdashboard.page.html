@@ -24,8 +24,9 @@
     <p *ngIf="uploadedFileName" class="uploadedFileName">Uploaded File: {{ uploadedFileName }}</p>
 
     <ion-button (click)="Analyze()">
-      <span>Analyze the image</span>
-      <ion-icon name="chevron-forward-outline"></ion-icon>
+      <ion-spinner *ngIf="isLoading" name="circular" color="light"></ion-spinner>
+      <span *ngIf="!isLoading">Analyze the image</span>
+      <ion-icon *ngIf="!isLoading" name="chevron-forward-outline"></ion-icon>
     </ion-button>
   </div>
 </ion-content>
