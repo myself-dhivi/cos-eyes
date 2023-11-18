@@ -19,6 +19,7 @@ export class UserdashboardPage implements OnInit {
   Base64String: any;
   uploadedFileName: string | null = null;
   isLoading: boolean = false
+  LoadingText = ""
 
   constructor(
     private router: Router,
@@ -80,20 +81,30 @@ export class UserdashboardPage implements OnInit {
       }
   
       const file = this.base64toFile(this.Base64String, 'uploaded_image.png', 'image/png');
+     
       this.imageCaptionService.generateCaption(file)
         .pipe(
           tap(response => {
             this.isLoading = false;
+             this.LoadingText = "Captioning the Image .. "
+           
             console.log("generated Tag: " + response.caption);
             this.storage.set("Caption", response.caption);
+          
             this.TextExtraction.extractTextFromImage(file)
               .pipe(
-                tap(textResponse => {
-                  console.log("ExtractedText: " + textResponse.extracted_text);
+                tap(textResponse  => {
+                  this.LoadingText = "Extracting Text .. "
+                  if(textResponse.extracted_text){
+                    console.log("ExtractedText: " + textResponse.extracted_text);
                   const cleanedResponse = textResponse.extracted_text.replace(/\n/g, ' ');
                   this.storage.set("ExtractedText", cleanedResponse);
+                  }else{
+                    this.storage.set("ExtractedText", textResponse.message);
+                  }
+                  
                 })
-              )
+              ) 
               .subscribe(() => {
                 this.router.navigate(["/output-page"]);
               });

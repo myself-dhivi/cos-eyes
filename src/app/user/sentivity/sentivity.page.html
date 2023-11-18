@@ -10,9 +10,9 @@
     <ion-card>
     <img [src]="base64Image" alt="Image">
     <h1> <span>Sensivity :</span> 0 %</h1>
-    <h2><span>Report : </span> There is no sensitive content in this image</h2>
+    <h2><span>Report : </span> {{sensitivityValue}}</h2>
     <ion-button (click)="playAudio()">Play Audio</ion-button>
-    
+    <p>Likeliness values are Unknown, Very Unlikely, Unlikely, Possible, Likely, and Very Likely</p>
 
   </ion-card>
   </div>

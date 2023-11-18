@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 })
 export class SentivityPage implements OnInit {
   base64Image: any;
-  caption = "This is a Image of te Cat Looking Curiously.";
-  sensitivityValue = "30%";
+  sensitivityValue = "";
+  values = ["Unlikely", "Possible", "Likely"];
 
   constructor(
     private storage: Storage,
@@ -26,7 +26,7 @@ export class SentivityPage implements OnInit {
     this.storage.create();
     this.storage.get("imageData").then((imageData) => {
       this.base64Image = imageData;
-  
+    this.sensitivity();
     });
   }
 
@@ -38,11 +38,12 @@ export class SentivityPage implements OnInit {
 
   playAudio() {
     this.textToSpeech
-      .speak(this.caption)
+      .speak(  this.sensitivityValue + "content in the Image")
       .then(() => console.log('Done'))
       .catch((reason: any) => console.log(reason));
   }
   sensitivity(){
-    this.router.navigate(["/sentivity"])
+    const randomIndex = Math.floor(Math.random() * this.values.length);
+    this.sensitivityValue = this.values[randomIndex];
   }
 }

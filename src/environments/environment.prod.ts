@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'http://127.0.0.1:8000', // Replace with your FastAPI server URL
+  apiUrl: 'http://192.168.43.124:8000', // Replace with your FastAPI server URL
 };

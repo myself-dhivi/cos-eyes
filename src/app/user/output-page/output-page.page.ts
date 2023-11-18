@@ -34,9 +34,14 @@ export class OutputPagePage implements OnInit {
 
   playAudio() {
     this.textToSpeech
-      .speak(this.caption)
+      .speak("Image Discribtion is " +this.caption)
       .then(() => console.log('Done'))
       .catch((reason: any) => console.log(reason));
+    this.textToSpeech
+      .speak(" Extracted Text in the image "+this.ExtractedText)
+      .then(() => console.log('Done'))
+      .catch((reason: any) => console.log(reason));
+    
   }
 
   sensitivity() {
