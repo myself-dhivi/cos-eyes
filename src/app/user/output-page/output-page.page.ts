@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-output-page',
@@ -18,7 +19,8 @@ export class OutputPagePage implements OnInit {
     private storage: Storage,
     private textToSpeech: TextToSpeech,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private platform: Platform
   ) {}
 
   async ngOnInit() {
@@ -33,18 +35,37 @@ export class OutputPagePage implements OnInit {
   }
 
   playAudio() {
-    this.textToSpeech
-      .speak("Image Discribtion is " +this.caption)
-      .then(() => console.log('Done'))
-      .catch((reason: any) => console.log(reason));
-    this.textToSpeech
-      .speak(" Extracted Text in the image "+this.ExtractedText)
-      .then(() => console.log('Done'))
-      .catch((reason: any) => console.log(reason));
-    
+    const message =
+      "Image Description is " + this.caption + ". Extracted Text in the image " + this.ExtractedText;
+  
+    if (this.platform.is('cordova')) {
+      // Running on a mobile device
+      console.log('Running on Cordova. Using TextToSpeech plugin.');
+      this.textToSpeech
+        .speak(message)
+        .then(() => console.log('TextToSpeech plugin: Speech done'))
+        .catch((reason: any) => console.error('TextToSpeech plugin error:', reason));
+    } else {
+      // Running in a browser
+      console.log('Running in a browser. Using Web Speech API.');
+      if ('speechSynthesis' in window) {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(message);
+  
+        utterance.onend = () => {
+          console.log('Web Speech API: Speech done');
+        };
+  
+        synth.speak(utterance);
+      } else {
+        // Browser does not support speech synthesis
+        console.warn('Speech synthesis is not supported in this browser.');
+      }
+    }
   }
+  
 
   sensitivity() {
-    this.router.navigate(['/sensitivity']);
+    this.router.navigate(['/sentivity']);
   }
 }

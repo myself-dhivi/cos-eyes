@@ -12,10 +12,11 @@ export class TextExtrationService {
 
   constructor(private http: HttpClient) {}
 
-  extractTextFromImage(file: File): Observable<any> {
+  extractTextFromImage(file: File , lang: string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-
-    return this.http.post<any>(this.apiUrl, formData);
+    const params = { lang }; 
+      
+    return this.http.post<any>(this.apiUrl, formData, { params });
   }
 }

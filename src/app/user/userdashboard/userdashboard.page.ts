@@ -20,6 +20,7 @@ export class UserdashboardPage implements OnInit {
   uploadedFileName: string | null = null;
   isLoading: boolean = false
   LoadingText = ""
+  selectedLanguage: string = 'eng';
 
   constructor(
     private router: Router,
@@ -91,7 +92,7 @@ export class UserdashboardPage implements OnInit {
             console.log("generated Tag: " + response.caption);
             this.storage.set("Caption", response.caption);
           
-            this.TextExtraction.extractTextFromImage(file)
+            this.TextExtraction.extractTextFromImage(file , this.selectedLanguage)
               .pipe(
                 tap(textResponse  => {
                   this.LoadingText = "Extracting Text .. "

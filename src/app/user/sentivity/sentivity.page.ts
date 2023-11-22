@@ -22,13 +22,11 @@ export class SentivityPage implements OnInit {
     private router : Router
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.storage.create();
-    this.storage.get("imageData").then((imageData) => {
-      this.base64Image = imageData;
+    this.base64Image = await this.storage.get('Base64String');
     this.sensitivity();
-    });
-  }
+    };
 
 
 
