@@ -38,13 +38,9 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
+                 
+                 
         </provider>
     </application>
-
-    <!-- Permissions -->
-     <meta 
-     http-equiv="Content-Security-Policy"   
-     content="upgrade-insecure-requests" 
-    />
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

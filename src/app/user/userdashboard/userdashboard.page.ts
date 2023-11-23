@@ -4,6 +4,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Storage } from '@ionic/storage';
 import { tap } from 'rxjs';
 import { ImageCaptionService } from 'src/app/services/captioning/image-caption.service';
+import { DetectNSFWService } from 'src/app/services/detectNSFW/detect-nsfw.service';
 import { TextExtrationService } from 'src/app/services/text-extraction/text-extration.service';
 
 @Component({
@@ -26,7 +27,8 @@ export class UserdashboardPage implements OnInit {
     private router: Router,
     private storage: Storage,
     private imageCaptionService: ImageCaptionService, 
-    private TextExtraction : TextExtrationService
+    private TextExtraction : TextExtrationService,
+    private NSFWservice : DetectNSFWService
   ) { }
 
   ngOnInit() {
@@ -88,27 +90,9 @@ export class UserdashboardPage implements OnInit {
           tap(response => {
             this.isLoading = false;
              this.LoadingText = "Captioning the Image .. "
-           
             console.log("generated Tag: " + response.caption);
             this.storage.set("Caption", response.caption);
-          
-            this.TextExtraction.extractTextFromImage(file , this.selectedLanguage)
-              .pipe(
-                tap(textResponse  => {
-                  this.LoadingText = "Extracting Text .. "
-                  if(textResponse.extracted_text){
-                    console.log("ExtractedText: " + textResponse.translated_text);
-                  const cleanedResponse = textResponse.translated_text.replace(/\n/g, ' ');
-                  this.storage.set("ExtractedText", cleanedResponse);
-                  }else{
-                    this.storage.set("ExtractedText", textResponse.message);
-                  }
-                  
-                })
-              ) 
-              .subscribe(() => {
-                this.router.navigate(["/output-page"]);
-              });
+            this.textExtraction(file);
           }),
         )
         .subscribe();
@@ -117,12 +101,38 @@ export class UserdashboardPage implements OnInit {
       this.isLoading = false;
     }
   }
-  
-  
-  
 
+  textExtraction(file : any){
+    this.TextExtraction.extractTextFromImage(file , this.selectedLanguage)
+    .pipe(
+      tap(textResponse  => {
+        this.LoadingText = "Extracting Text .. "
+        if(textResponse.extracted_text){
+          console.log("ExtractedText: " + textResponse.translated_text);
+        const cleanedResponse = textResponse.translated_text.replace(/\n/g, ' ');
+        this.storage.set("ExtractedText", cleanedResponse);
+        }else{
+          this.storage.set("ExtractedText", textResponse.message);
+        }
+        this.sensitivity(file)
+      })
+    ) 
+    .subscribe(() => {
+      this.router.navigate(["/output-page"]);
+    });
+  }
 
-
+  sensitivity(file : any){
+    this.NSFWservice.detectNSFW(file).subscribe(
+      (result) => {
+        this.storage.set("NSFW", result.label);
+      },
+      (error) => {
+        console.error('Error detecting NSFW content:', error);
+      }
+    );
+  }
+  
   private async setPathAndNavigate(Base64String: any) {
     await this.storage.set('Base64String', Base64String);
     this.navigate = true;

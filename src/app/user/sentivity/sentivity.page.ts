@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
-import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular'; // Import Platform
+
 @Component({
   selector: 'app-sentivity',
   templateUrl: './sentivity.page.html',
@@ -12,36 +13,46 @@ import { Router } from '@angular/router';
 export class SentivityPage implements OnInit {
   base64Image: any;
   sensitivityValue = "";
-  values = ["Unlikely", "Possible", "Likely"];
+  values = ["Safe", "Possible", "Likely"];
 
   constructor(
     private storage: Storage,
     private textToSpeech: TextToSpeech,
-    private http: HttpClient,
     private location: Location,
-    private router : Router
+    private router: Router,
+    private platform: Platform // Inject Platform
   ) {}
 
   async ngOnInit() {
-    this.storage.create();
+    await this.storage.create();
     this.base64Image = await this.storage.get('Base64String');
     this.sensitivity();
-    };
-
-
+  }
 
   back() {
     this.location.back();
   }
 
   playAudio() {
-    this.textToSpeech
-      .speak(  this.sensitivityValue + "content in the Image")
-      .then(() => console.log('Done'))
-      .catch((reason: any) => console.log(reason));
+    const textToRead = this.sensitivityValue + "sensitive content in the Image";
+
+    if (this.platform.is('cordova')) {
+      // If running on a mobile device
+      this.textToSpeech
+        .speak(textToRead)
+        .then(() => console.log('Done'))
+        .catch((reason: any) => console.log(reason));
+    } else {
+      // If running in a browser
+      const speechSynthesis = window.speechSynthesis;
+      const speechUtterance = new SpeechSynthesisUtterance(textToRead);
+      speechSynthesis.speak(speechUtterance);
+    }
   }
-  sensitivity(){
-    const randomIndex = Math.floor(Math.random() * this.values.length);
-    this.sensitivityValue = this.values[randomIndex];
+
+  async sensitivity() {
+    const index = await this.storage.get("NSFW");
+    this.sensitivityValue = this.values[index];
+    console.log(index, this.sensitivityValue);
   }
 }
