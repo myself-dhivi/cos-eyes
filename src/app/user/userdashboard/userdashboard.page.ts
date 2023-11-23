@@ -97,8 +97,8 @@ export class UserdashboardPage implements OnInit {
                 tap(textResponse  => {
                   this.LoadingText = "Extracting Text .. "
                   if(textResponse.extracted_text){
-                    console.log("ExtractedText: " + textResponse.extracted_text);
-                  const cleanedResponse = textResponse.extracted_text.replace(/\n/g, ' ');
+                    console.log("ExtractedText: " + textResponse.translated_text);
+                  const cleanedResponse = textResponse.translated_text.replace(/\n/g, ' ');
                   this.storage.set("ExtractedText", cleanedResponse);
                   }else{
                     this.storage.set("ExtractedText", textResponse.message);
